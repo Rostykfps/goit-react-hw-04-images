@@ -10,7 +10,7 @@ import { Container } from './App.styled';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const PER_PAGE = 200;
+const PER_PAGE = 12;
 
 const App = () => {
   const [searchQuery, setsearchQuery] = useState('');

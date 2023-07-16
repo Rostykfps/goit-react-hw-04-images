@@ -13,27 +13,27 @@ import 'react-toastify/dist/ReactToastify.css';
 const PER_PAGE = 12;
 
 const App = () => {
-  const [searchQuery, setsearchQuery] = useState('');
-  const [images, setimages] = useState([]);
-  const [page, setpage] = useState(1);
-  const [isLoadMore, setisLoadMore] = useState(false);
-  const [isLoader, setisLoader] = useState(false);
-  const [isShowModal, setisShowModal] = useState(false);
-  const [largeImageURL, setlargeImageURL] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoadMore, setIsLoadMore] = useState(false);
+  const [isLoader, setIsLoader] = useState(false);
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [largeImageURL, setLargeImageURL] = useState('');
 
   useEffect(() => {
     if (searchQuery === '') {
       return;
     }
-    setisLoader(true);
-    setisLoadMore(false);
+    setIsLoader(true);
+    setIsLoadMore(false);
     getImages(searchQuery, page, PER_PAGE);
   }, [searchQuery, page]);
 
   const handleSubmit = searchQuery => {
-    setsearchQuery(searchQuery);
-    setimages([]);
-    setpage(1);
+    setSearchQuery(searchQuery);
+    setImages([]);
+    setPage(1);
   };
 
   const getImages = async (query, page, PER_PAGE) => {
@@ -41,17 +41,17 @@ const App = () => {
       const { hits, totalHits } = await API.getData(query, page, PER_PAGE);
 
       if (hits.length === 0) {
-        setisLoader(false);
+        setIsLoader(false);
         toast.error(
           'Sorry, there are no images matching your search query. Please try again.'
         );
         return;
       }
 
-      setimages(prevState => [...prevState, ...hits]);
+      setImages(prevState => [...prevState, ...hits]);
       const totalPages = Math.ceil(totalHits / PER_PAGE);
 
-      setisLoadMore(page < totalPages);
+      setIsLoadMore(page < totalPages);
 
       if (page === 1) {
         toast.info(`Hooray! We found ${totalHits} images.`);
@@ -60,23 +60,23 @@ const App = () => {
           "We're sorry, but you've reached the end of search results."
         );
       }
-      setisLoader(false);
+      setIsLoader(false);
     } catch (error) {
       console.log(error.message);
     }
   };
 
   const loadMore = () => {
-    setpage(prevState => prevState + 1);
+    setPage(prevState => prevState + 1);
   };
 
   const showModal = largeImage => {
-    setisShowModal(true);
-    setlargeImageURL(largeImage);
+    setIsShowModal(true);
+    setLargeImageURL(largeImage);
   };
 
   const closeModal = () => {
-    setisShowModal(false);
+    setIsShowModal(false);
   };
 
   return (
